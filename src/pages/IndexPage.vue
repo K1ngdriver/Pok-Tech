@@ -1,8 +1,9 @@
 <template>
   <q-page padding>
     <button @click="count++">{{ count }}</button>
-    <input v-model="message" @keyup.esc="clearMessage" />
+    <input v-model="message" @keyup.esc="clearMessage" :class="errorStyle" />
     <button @click="clearMessage">Clear</button>
+    <div>{{ message.length }}</div>
     <h6 v-show="message.length">Tipying...</h6>
     <h5 v-if="message.length">{{ message }}</h5>
     <h6 v-else>No message entered</h6>
@@ -37,6 +38,39 @@ export default defineComponent({
       console.log("upperCaseMessage fired");
       return this.message.toUpperCase();
     },
+    errorStyle() {
+      return this.message.length > 22 ? "erro" : "";
+    },
+  },
+  beforeCreate() {
+    console.log("beforeCreate");
+  },
+  created() {
+    console.log("created");
+  },
+  beforeMount() {
+    console.log("beforeMount");
+  },
+  mounted() {
+    console.log("mounted");
+  },
+  beforeUpdate() {
+    console.log("beforeUpdate");
+  },
+  updated() {
+    console.log("updated");
+  },
+  beforeUnmount() {
+    console.log("beforeUnmount");
+  },
+  unmounted() {
+    console.log("unmounted");
   },
 });
 </script>
+<style>
+.erro {
+  background-color: pink;
+  color: red;
+}
+</style>
