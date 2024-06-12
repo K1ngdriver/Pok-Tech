@@ -1,1 +1,12 @@
 // app global css in SCSS form
+
+// Imported fonts
+@font-face {
+  font-family: "DotGothic16";
+  src: url(./fonts/DotGothic16/DotGothic16-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "PressStart2P";
+  src: url(./fonts/Press_Start_2P/PressStart2P-Regular.ttf) format("truetype");
+}
