@@ -10,3 +10,11 @@
   font-family: "PressStart2P";
   src: url(./fonts/Press_Start_2P/PressStart2P-Regular.ttf) format("truetype");
 }
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "DotGothic16", sans-serif;
+  font-size: 1rem;
+}

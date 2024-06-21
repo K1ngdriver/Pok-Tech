@@ -1,0 +1,11 @@
+@import "../../css/quasar.variables.scss";
+
+.button {
+  color: white;
+  background-color: #231f20;
+  font-family: $font-family-press-start-2p;
+  border-top-left-radius: 0.5rem;
+  border-bottom-right-radius: 1.5rem;
+  border: 3px solid black;
+  box-shadow: inset -5px -10px 0px black;
+}

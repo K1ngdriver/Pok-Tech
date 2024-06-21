@@ -148,9 +148,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Quasar App`,
-        short_name: `Quasar App`,
-        description: `A Quasar Project`,
+        name: `Poketech`,
+        short_name: `Poketech`,
+        description: `A Poketech Project`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",

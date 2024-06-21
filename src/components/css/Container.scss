@@ -1,0 +1,15 @@
+.container {
+  background-color: #dbdbdc;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #a6a6a6, #ffffff);
+
+    .title {
+      font-size: 1.5rem;
+      font-family: $font-family-press-start-2p;
+    }
+  }
+}

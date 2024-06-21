@@ -1,18 +1,37 @@
 @import "../css/quasar.variables.scss";
 
-.title {
-  font-family: $font-family-press-start-2p;
+.header {
+  background-color: $background;
+  color: black;
+
+  &-circle {
+    border-bottom: 3px solid black;
+    border-bottom-right-radius: 1rem;
+  }
+
+  &-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: $font-family-press-start-2p;
+    border-top: 3px solid black;
+    border-top-left-radius: 1rem;
+  }
+
+  &-navCircle {
+    height: 3rem;
+    width: 3rem;
+    background-color: $circle;
+    border-radius: 50%;
+    box-shadow: inset 0.1rem 0rem 0.25rem 0 rgba(0, 0, 0, 0.5);
+  }
 }
 
-.pokemon-list {
-  padding: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-}
+.background {
+  width: 100%;
+  background-color: $background;
 
-.pokemon-item {
-  margin: 10px;
-  text-align: center;
+  ::after {
+    box-shadow: none;
+  }
 }
