@@ -133,7 +133,7 @@ onMounted(() => {
       }
     },
     {
-      rootMargin: "0px",
+      rootMargin: "10px",
       threshold: 1.0,
     }
   );
