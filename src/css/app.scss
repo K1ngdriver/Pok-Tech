@@ -18,3 +18,11 @@
   font-family: "DotGothic16", sans-serif;
   font-size: 1rem;
 }
+
+.q-field--outlined .q-field__control:before {
+  border: 3px solid black;
+}
+
+.q-field__control {
+  color: black;
+}

@@ -37,7 +37,7 @@
 
           <q-card-actions align="right">
             <q-btn flat label="Cancelar" v-close-popup />
-            <q-btn label="Pesquisar" color="primary" @click="fetchPokemons" />
+            <q-btn label="Pesquisar" color="secondary" @click="fetchPokemons" />
           </q-card-actions>
         </q-card>
       </q-dialog>

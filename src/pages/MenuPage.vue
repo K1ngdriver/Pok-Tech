@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center q-mx-md">
-    <ContainerComponent title="Menu central">
+    <ContainerComponent title="Menu">
       <div class="menu-page">
         <ButtonComponent
           title="Pokédex"
@@ -8,12 +8,12 @@
           :click="() => goToPokedex()"
         />
         <ButtonComponent
-          title="Jogo"
+          title="Guess the Pokémon"
           class="menu-page-button"
-          :click="() => goToPokedex()"
+          :click="() => goToGuessPokemon()"
         />
         <ButtonComponent
-          title="Companheiro"
+          title="Companion"
           class="menu-page-button"
           :click="() => goToPokedex()"
         />
@@ -32,5 +32,9 @@ const route = useRouter();
 
 function goToPokedex() {
   route.push("/pokedex");
+}
+
+function goToGuessPokemon() {
+  route.push("/guess-pokemon");
 }
 </script>

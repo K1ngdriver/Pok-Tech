@@ -1,0 +1,40 @@
+@import "../../css/quasar.variables.scss";
+
+.guess-pokemon-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  height: 65vh;
+
+  &-title {
+    font-size: 1.5rem;
+    font-family: $font-family-press-start-2p;
+    margin-bottom: 2rem;
+  }
+
+  &-buttons-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1rem;
+  }
+
+  &-button {
+    height: 5rem;
+
+    > button {
+      font-size: 0.8rem;
+    }
+
+    &-guessed {
+      background-color: $background;
+
+      > button {
+        background-color: $containers-background;
+        color: black;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

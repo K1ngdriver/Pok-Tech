@@ -12,6 +12,10 @@ const routes = [
         path: "/pokedex/:name",
         component: () => import("pages/PokemonDetail.vue"),
       },
+      {
+        path: "/guess-pokemon",
+        component: () => import("pages/GuessPokemonPage.vue"),
+      },
     ],
   },
 

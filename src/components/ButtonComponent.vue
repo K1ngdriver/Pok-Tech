@@ -1,7 +1,9 @@
 <template>
-  <button class="button q-py-lg q-px-xl" :style="style" @click="click">
-    {{ title }}
-  </button>
+  <div class="container-button" :style="containerStyle">
+    <button class="button" :style="style" @click="click">
+      {{ title }}
+    </button>
+  </div>
 </template>
 
 <script setup>
@@ -14,6 +16,9 @@ const props = defineProps({
     required: true,
   },
   style: {
+    type: String,
+  },
+  containerStyle: {
     type: String,
   },
   click: {

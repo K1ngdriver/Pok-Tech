@@ -7,5 +7,18 @@
   border-top-left-radius: 0.5rem;
   border-bottom-right-radius: 1.5rem;
   border: 3px solid black;
-  box-shadow: inset -5px -10px 0px black;
+}
+
+.container-button {
+  display: flex;
+  background-color: black;
+  border-radius: 0.5rem 1rem 2rem 1rem;
+  border: 3px solid black;
+  border-top-width: 0;
+  border-left-width: 0;
+  padding: 0 0.5rem 0.5rem 0;
+
+  > * {
+    width: 100%;
+  }
 }

@@ -1,5 +1,7 @@
+@import "../../css/quasar.variables.scss";
+
 .container {
-  background-color: #dbdbdc;
+  background-color: $containers-background;
 
   &-header {
     display: flex;
