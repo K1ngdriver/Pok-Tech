@@ -1,5 +1,5 @@
 <template>
-  <div class="container full-width">
+  <div class="container q-ma-md">
     <div class="container-header q-pa-md">
       <span class="title">{{ title }}</span>
       <q-btn
@@ -10,7 +10,12 @@
         @click="openFilters"
       />
     </div>
-    <slot></slot>
+    <div class="container-content">
+      <slot></slot>
+    </div>
+    <div class="container-footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 

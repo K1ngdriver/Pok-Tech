@@ -1,51 +1,45 @@
 <template>
-  <div class="flex flex-center q-mt-md q-mx-md index-page">
+  <q-dialog v-model="isDialogOpen">
+    <q-card style="width: 90vw" class="dialog">
+      <q-card-section>
+        <div class="dialog-title">Filtros de pesquisa</div>
+      </q-card-section>
+
+      <q-card-section>
+        <q-form>
+          <q-input
+            class="q-mb-md"
+            outlined
+            v-model="searchTerm"
+            label="Nome ou número"
+          />
+          <q-select
+            class="q-mb-md"
+            outlined
+            v-model="region"
+            :options="regions"
+            label="Região"
+          />
+          <q-select outlined v-model="type" :options="types" label="Tipagem" />
+        </q-form>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancelar" v-close-popup />
+        <q-btn
+          label="Pesquisar"
+          style="background-color: #ff3131; color: white"
+          @click="fetchPokemons"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <div class="flex flex-center index-page">
     <ContainerComponent
       title="Pokédex"
       :hasSearch="true"
       :openFilters="openFilters"
     >
-      <q-dialog v-model="isDialogOpen">
-        <q-card style="width: 90vw" class="dialog">
-          <q-card-section>
-            <div class="dialog-title">Filtros de pesquisa</div>
-          </q-card-section>
-
-          <q-card-section>
-            <q-form>
-              <q-input
-                class="q-mb-md"
-                outlined
-                v-model="searchTerm"
-                label="Nome ou número"
-              />
-              <q-select
-                class="q-mb-md"
-                outlined
-                v-model="region"
-                :options="regions"
-                label="Região"
-              />
-              <q-select
-                outlined
-                v-model="type"
-                :options="types"
-                label="Tipagem"
-              />
-            </q-form>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn flat label="Cancelar" v-close-popup />
-            <q-btn
-              label="Pesquisar"
-              style="background-color: #ff3131; color: white"
-              @click="fetchPokemons"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-
       <div class="pokemon-list q-pa-md">
         <div
           v-for="pokemon in pokemons"
@@ -57,13 +51,15 @@
           <div>{{ capitalize(pokemon.name) }}</div>
         </div>
       </div>
-      <div class="full-width flex justify-center q-py-md" ref="spinner">
-        <q-spinner
-          v-if="pokemons.length !== 0 && loading"
-          size="lg"
-          color="primary"
-        />
-      </div>
+      <template #footer>
+        <div class="full-width flex justify-center q-py-md" ref="spinner">
+          <q-spinner
+            v-if="pokemons.length !== 0 && loading"
+            size="lg"
+            color="primary"
+          />
+        </div>
+      </template>
     </ContainerComponent>
   </div>
 </template>

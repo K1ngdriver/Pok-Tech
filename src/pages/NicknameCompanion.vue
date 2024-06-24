@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center q-mx-md">
+  <q-page class="flex flex-center">
     <ContainerComponent title="Companion">
       <div v-if="loading" class="flex justify-center full-width q-py-xl">
         <q-spinner size="50px" color="black" />

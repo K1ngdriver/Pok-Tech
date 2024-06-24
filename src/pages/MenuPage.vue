@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center q-mx-md">
+  <q-page class="flex flex-center">
     <ContainerComponent title="Menu">
       <div class="menu-page">
         <ButtonComponent

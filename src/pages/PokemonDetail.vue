@@ -1,7 +1,10 @@
 <template>
-  <q-page class="flex flex-center q-mx-md">
+  <q-page class="flex flex-center">
     <ContainerComponent title="Detalhes">
-      <div v-if="loading" class="flex justify-center full-width q-py-xl">
+      <div
+        v-if="loading"
+        class="flex justify-center full-width q-py-xl full-height"
+      >
         <q-spinner size="50px" color="black" />
       </div>
       <div v-else>
@@ -29,6 +32,8 @@
             />
           </div>
         </div>
+      </div>
+      <template #footer v-if="!loading">
         <div class="pokemon-description">
           <div class="pokemon-description-container">
             <p class="pokemon-description-text">
@@ -36,7 +41,7 @@
             </p>
           </div>
         </div>
-      </div>
+      </template>
     </ContainerComponent>
   </q-page>
 </template>

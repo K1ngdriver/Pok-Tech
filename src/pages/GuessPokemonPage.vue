@@ -1,15 +1,16 @@
 <template>
-  <q-page class="flex flex-center q-mx-md q-py-md">
+  <q-page class="flex flex-center">
     <ContainerComponent title="Guess the Pokémon">
-      <q-spinner v-if="loading" />
+      <div
+        v-if="loading"
+        class="flex justify-center full-width q-py-xl full-height"
+      >
+        <q-spinner size="50px" color="black" />
+      </div>
       <div v-else class="guess-pokemon-page">
         <span class="guess-pokemon-page-title">Dicas</span>
         <div class="guess-pokemon-page-buttons-container">
-          <div
-            v-for="tip in revealedTips"
-            :key="tip.id"
-            class="guess-pokemon-page-button"
-          >
+          <div v-for="tip in revealedTips" :key="tip.id">
             <span>
               {{ tip.title }}
             </span>
@@ -24,6 +25,13 @@
           </div>
         </div>
         <div v-if="revealedPokemon" class="guess-pokemon-page-image">
+          <span class="q-mt-lg text-bold">
+            {{
+              userRight
+                ? `You're right 🎉 Congratulations!`
+                : `You missed 😢 Try again!`
+            }}
+          </span>
           <div class="guess-pokemon-page-image-background">
             <img
               :src="drawnPokemon.image"
@@ -34,19 +42,23 @@
           <span>{{ capitalize(drawnPokemon.name) }}</span>
         </div>
       </div>
-      <q-input
-        label="Name"
-        class="q-ma-md guess-pokemon-page-input"
-        outlined
-        v-model="response"
-      />
-      <button
-        v-if="!revealedPokemon"
-        class="guess-pokemon-page-submit-button"
-        @click="submitResponse"
-      >
-        <span>Submit</span>
-      </button>
+      <template #footer>
+        <div class="flex q-pa-md justify-center">
+          <q-input
+            label="Name"
+            class="guess-pokemon-page-input q-mr-md"
+            outlined
+            v-model="response"
+          />
+          <q-btn
+            :icon="revealedPokemon ? 'replay' : 'arrow_upward'"
+            class="guess-pokemon-page-submit-button"
+            color="primary"
+            @click="revealedPokemon ? replay() : submitResponse()"
+            v-bind:disable="loading"
+          />
+        </div>
+      </template>
     </ContainerComponent>
   </q-page>
 </template>
@@ -69,6 +81,7 @@ const error = ref(null);
 
 const drawnPokemon = ref(null);
 const revealedPokemon = ref(false);
+const userRight = ref(false);
 const currentTip = ref(1);
 const tips = ref([]);
 const revealedTips = ref(
@@ -168,7 +181,7 @@ function submitResponse() {
   }
 
   currentTip.value += 1;
-  if (response.value.toLowerCase().trim() !== drawnPokemon.value) {
+  if (response.value.toLowerCase().trim() !== drawnPokemon.value.name) {
     revealedTips.value = revealedTips.value.map((revealedTip) => {
       if (revealedTip.id === currentTip.value) {
         const nextTip = tips.value.find((tip) => tip.id === currentTip.value);
@@ -181,7 +194,24 @@ function submitResponse() {
       }
       return revealedTip;
     });
+  } else {
+    userRight.value = true;
+    revealedPokemon.value = true;
   }
+}
+
+async function replay() {
+  loading.value = false;
+  revealedPokemon.value = false;
+  userRight.value = false;
+  currentTip.value = 1;
+  revealedTips.value = revealedTips.value.map((revealedTip) => ({
+    ...revealedTip,
+    value: "",
+    title: `Tip ${revealedTip.id}`,
+    guessed: false,
+  }));
+  await fetchPokemonTips();
 }
 
 onMounted(async () => {
