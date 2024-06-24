@@ -63,11 +63,6 @@ onMounted(async () => {
       `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`
     );
 
-    // eslint-disable-next-line no-console
-    console.log("response.data", response.data);
-    // eslint-disable-next-line no-console
-    console.log("speciesResponse.data", speciesResponse.data);
-
     pokemon.value = {
       name: response.data.name,
       image: response.data.sprites.other["official-artwork"].front_default,

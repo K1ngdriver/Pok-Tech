@@ -5,7 +5,6 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  height: 65vh;
 
   &-title {
     font-size: 1.5rem;
@@ -28,6 +27,7 @@
     }
 
     &-guessed {
+      height: 5rem;
       background-color: $background;
 
       > button {
@@ -35,6 +35,46 @@
         color: black;
         font-size: 0.8rem;
       }
+    }
+  }
+
+  &-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &-background {
+      display: flex;
+      padding: 2rem;
+      margin: 3rem 0 1rem;
+      border: 2px solid black;
+      background-image: url("../../assets/pokemon-background.png");
+      background-size: cover;
+      background-position: center;
+
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.1);
+        z-index: 1;
+      }
+
+      > * {
+        position: relative;
+        z-index: 2;
+      }
+    }
+
+    &-artwork {
+      max-width: 10rem;
     }
   }
 }
