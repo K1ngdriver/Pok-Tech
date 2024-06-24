@@ -18,16 +18,6 @@
           <span class="pokemon-title"
             >{{ pokemon.number }} - {{ capitalize(pokemon.name) }}</span
           >
-          <div class="pokemon-types">
-            <q-chip
-              v-for="type in pokemon.types"
-              :key="type"
-              class="pokemon-type"
-              :label="capitalize(type)"
-              :class="`pokemon-type--${type}`"
-              text-color="white"
-            />
-          </div>
         </div>
         <div class="pokemon-description">
           <div class="pokemon-description-container">
@@ -62,11 +52,6 @@ onMounted(async () => {
     const speciesResponse = await axios.get(
       `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
     );
-
-    // eslint-disable-next-line no-console
-    console.log("response.data", response.data);
-    // eslint-disable-next-line no-console
-    console.log("speciesResponse.data", speciesResponse.data);
 
     pokemon.value = {
       name: response.data.name,
