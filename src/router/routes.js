@@ -16,6 +16,16 @@ const routes = [
         path: "/guess-pokemon",
         component: () => import("pages/GuessPokemonPage.vue"),
       },
+      {
+        path: "/choice-companion",
+        component: () => import("pages/ChoiceCompanion.vue"),
+      },
+      {
+        path: "/nickname-companion/:pokemonId",
+        component: () => import("pages/NicknameCompanion.vue"),
+      },
+      { path: "/save", component: () => import("pages/SaveObjectPage.vue") },
+      { path: "/fetch", component: () => import("pages/FetchObjectPage.vue") },
     ],
   },
 

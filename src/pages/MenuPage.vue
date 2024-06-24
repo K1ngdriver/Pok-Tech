@@ -15,7 +15,7 @@
         <ButtonComponent
           title="Companion"
           class="menu-page-button"
-          :click="() => goToPokedex()"
+          :click="() => goToCompanion()"
         />
       </div>
     </ContainerComponent>
@@ -36,5 +36,9 @@ function goToPokedex() {
 
 function goToGuessPokemon() {
   route.push("/guess-pokemon");
+}
+
+function goToCompanion() {
+  route.push("/choice-companion");
 }
 </script>
