@@ -8,6 +8,9 @@
 
 <script>
 import { mapActions } from "vuex";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 export default {
   name: "LoginPage",
@@ -23,6 +26,7 @@ export default {
     ...mapActions("auth", ["login"]),
     async onSubmit() {
       await this.login(this.objectData);
+      router.push("/menu");
     },
   },
 };

@@ -11,6 +11,9 @@
 import { mapActions } from "vuex";
 import { db } from "../../firebase.js";
 import { collection, addDoc } from "firebase/firestore";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 export default {
   name: "RegisterPage",
@@ -39,6 +42,7 @@ export default {
             email: this.authData.email,
           });
           console.log("Document written with ID: ", docRef.id);
+          router.push("/menu");
         } catch (e) {
           console.error("Error adding document: ", e);
         }
