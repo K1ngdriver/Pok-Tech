@@ -5,9 +5,20 @@ import {
 } from "firebase/auth";
 
 export default {
-  state: {},
-  mutations: {},
-  getters: {},
+  state: {
+    userEmail: null,
+  },
+  mutations: {
+    SET_USER_EMAIL(state, email) {
+      state.userEmail = email;
+    },
+    CLEAR_USER_EMAIL(state) {
+      state.userEmail = null;
+    },
+  },
+  getters: {
+    userEmail: (state) => state.userEmail,
+  },
   actions: {
     async register({}, payload) {
       return createUserWithEmailAndPassword(
@@ -18,6 +29,7 @@ export default {
         .then((userCredential) => {
           // eslint-disable-next-line no-console
           console.log("userCredential", userCredential);
+          commit("SET_USER_EMAIL", userCredential.email);
           return true;
         })
         .catch((error) => {
@@ -31,12 +43,26 @@ export default {
         .then((userCredential) => {
           // eslint-disable-next-line no-console
           console.log("userCredential", userCredential);
+          commit("SET_USER_EMAIL", userCredential.email);
           return true;
         })
         .catch((error) => {
           // eslint-disable-next-line no-console
           console.log("error", error.message);
           return false;
+        });
+    },
+    logout({ commit }) {
+      auth
+        .signOut()
+        .then(() => {
+          commit("CLEAR_USER_EMAIL");
+          // eslint-disable-next-line no-console
+          console.log("User signed out");
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log("error", error.message);
         });
     },
   },
