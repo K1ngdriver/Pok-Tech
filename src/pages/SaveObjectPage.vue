@@ -1,4 +1,3 @@
-// src/pages/SaveObjectPage.vue
 <template>
   <div>
     <q-input v-model="objectData.countHearts" label="corações" />
