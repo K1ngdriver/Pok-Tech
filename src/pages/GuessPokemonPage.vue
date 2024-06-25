@@ -15,7 +15,7 @@
               {{ tip.title }}
             </span>
             <ButtonComponent
-              :title="tip.value"
+              :title="currentTip >= tip.id ? tip.value : '?'"
               :class="
                 tip.guessed
                   ? 'guess-pokemon-page-button-guessed'
@@ -88,10 +88,7 @@ import { db } from "../../firebase";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
-// Obtenha a instância da store Vuex
 const store = useStore();
-
-// Crie uma propriedade computada para acessar o getter
 const userEmail = computed(() => store.getters["auth/userEmail"]);
 
 const response = ref("");
@@ -101,7 +98,7 @@ const error = ref(null);
 const drawnPokemon = ref(null);
 const revealedPokemon = ref(false);
 const userRight = ref(false);
-const currentTip = ref(0);
+const currentTip = ref(1);
 const tips = ref([]);
 const user = ref(null);
 const revealedTips = ref(
@@ -130,13 +127,12 @@ async function fetchPokemonTips() {
   error.value = null;
 
   try {
-    const randomPokemonId = Math.floor(Math.random() * 898) + 1;
+    const randomPokemonId = Math.floor(Math.random() * 1025) + 1;
+
     const pokemon = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
     );
-    const pokemonDetails = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon-species/${pokemon.data.id}`
-    );
+    const pokemonDetails = await axios.get(pokemon.data.species.url);
 
     const pokemonName = pokemon.data.name;
     const pokemonImage =
@@ -265,14 +261,17 @@ async function submitResponse() {
 }
 
 async function replay() {
-  loading.value = false;
+  loading.value = true;
+  error.value = null;
+  response.value = "";
   revealedPokemon.value = false;
   userRight.value = false;
   currentTip.value = 1;
-  revealedTips.value = revealedTips.value.map((revealedTip) => ({
-    ...revealedTip,
+  tips.value = [];
+  revealedTips.value = Array.from({ length: 4 }, (_, index) => ({
+    id: index + 1,
+    title: `Tip ${index + 1}`,
     value: "",
-    title: `Tip ${revealedTip.id}`,
     guessed: false,
   }));
   await fetchPokemonTips();

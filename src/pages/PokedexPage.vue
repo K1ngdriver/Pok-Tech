@@ -44,9 +44,10 @@
           "
         />
         <q-btn
-          :label="loading ? 'Loading...' : 'Search'"
+          label="Search"
           color="primary"
           v-bind:disable="loading"
+          v-bind:loading="loading"
           @click="
             async () => {
               if (hasFilters) {
@@ -191,7 +192,7 @@ async function fetchPokemonsByFilters() {
         const searchResponse = await axios.get(
           `https://pokeapi.co/api/v2/pokemon/${searchTerm.value.toLowerCase()}`
         );
-        searchPokemonId = searchResponse.data.id;
+        searchPokemonId = String(searchResponse.data.id);
         filterFunctions.push((pokemonId) => pokemonId === searchPokemonId);
       } catch (searchError) {
         error.value = "No Pokémon found with the specified name or ID.";
@@ -220,17 +221,17 @@ async function fetchPokemonsByFilters() {
       filterFunctions.push((pokemonId) => generationPokemonIds.has(pokemonId));
     }
 
-    let filteredPokemonNames = [];
+    let filteredPokemonIds = [];
     if (filterFunctions.length > 0) {
-      filteredPokemonNames = Array.from(
-        new Set([...typePokemonIds, ...generationPokemonIds])
+      filteredPokemonIds = Array.from(
+        new Set([...typePokemonIds, ...generationPokemonIds, searchPokemonId])
       );
-      filteredPokemonNames = filteredPokemonNames.filter((pokemonId) =>
+      filteredPokemonIds = filteredPokemonIds.filter((pokemonId) =>
         filterFunctions.every((filterFunction) => filterFunction(pokemonId))
       );
     }
 
-    const detailedPokemonPromises = filteredPokemonNames.map(
+    const detailedPokemonPromises = filteredPokemonIds.map(
       async (pokemonId) => {
         const detailsResponse = await axios.get(
           `https://pokeapi.co/api/v2/pokemon/${pokemonId}`

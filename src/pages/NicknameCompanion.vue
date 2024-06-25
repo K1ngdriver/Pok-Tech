@@ -78,10 +78,7 @@ import { db } from "../../firebase";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
-// Obtenha a instância da store Vuex
 const store = useStore();
-
-// Crie uma propriedade computada para acessar o getter
 const userEmail = computed(() => store.getters["auth/userEmail"]);
 
 const route = useRoute();
@@ -91,16 +88,12 @@ const pokemon = ref({});
 const newNickName = ref("");
 const newPokemonId = ref("");
 const user = ref(null);
+
 function returnToMenu() {
   router.push("/menu");
 }
 
 async function changeName() {
-  const pokemonData = {
-    pokemonId: newPokemonId.value,
-    nicknamePokemon: newNickName.value,
-  };
-
   try {
     await fetchUser();
   } catch (e) {
@@ -138,13 +131,15 @@ const fetchUser = async () => {
 const updateUserName = async () => {
   try {
     const userRef = doc(db, "users", user.value.id);
+    const countHearts =
+      user.value.pokemonId === newPokemonId.value ? user.value.countHearts : 0;
+
     await updateDoc(userRef, {
       nicknamePokemon: newNickName.value,
       pokemonId: newPokemonId.value,
-      countHearts: 0,
+      countHearts,
     });
 
-    // Atualiza o objeto localmente após a atualização
     user.value.nicknamePokemon = newNickName.value;
     user.value.pokemonId = newPokemonId.value;
   } catch (error) {
@@ -161,9 +156,7 @@ onMounted(async () => {
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${newPokemonId.value}`
     );
-    const speciesResponse = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon-species/${newPokemonId.value}`
-    );
+    const speciesResponse = await axios.get(response.data.species.url);
 
     pokemon.value = {
       name: response.data.name,

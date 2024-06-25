@@ -64,9 +64,7 @@ onMounted(async () => {
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
     );
-    const speciesResponse = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`
-    );
+    const speciesResponse = await axios.get(response.data.species.url);
 
     pokemon.value = {
       name: response.data.name,

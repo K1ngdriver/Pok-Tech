@@ -34,14 +34,11 @@ import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
-// Obtenha a instância da store Vuex
 const store = useStore();
-
-// Crie uma propriedade computada para acessar o getter
 const userEmail = computed(() => store.getters["auth/userEmail"]);
 
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../firebase"; // Ajuste o caminho para o seu arquivo de configuração do Firebase
+import { db } from "../../firebase";
 
 const user = ref({});
 

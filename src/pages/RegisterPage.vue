@@ -46,7 +46,15 @@
             </template>
           </q-input>
         </div>
-        <q-btn @click="onSubmit" color="primary" style="width: 50%">
+        <q-btn
+          @click="onSubmit"
+          color="primary"
+          style="width: 50%"
+          v-bind:loading="loading"
+          v-bind:disable="
+            !authData.email || !authData.password || !userData.userNickName
+          "
+        >
           Register
         </q-btn>
       </div>
@@ -71,11 +79,8 @@
 import { mapActions } from "vuex";
 import { db } from "../../firebase.js";
 import { collection, addDoc } from "firebase/firestore";
-import { useRouter } from "vue-router";
 import ContainerComponent from "src/components/ContainerComponent.vue";
 import "./css/RegisterPage.scss";
-
-const router = useRouter();
 
 export default {
   name: "RegisterPage",
@@ -95,6 +100,7 @@ export default {
         countHearts: 0,
       },
       isPwd: true,
+      loading: false,
     };
   },
   methods: {
@@ -103,17 +109,20 @@ export default {
       this.isPwd = !this.isPwd;
     },
     async onSubmit() {
+      this.loading = true;
       const response = await this.register(this.authData);
       if (response) {
         try {
-          const docRef = await addDoc(collection(db, "users"), {
+          await addDoc(collection(db, "users"), {
             ...this.userData,
             email: this.authData.email,
           });
 
-          router.push("/menu");
+          this.$router.push("/menu");
         } catch (e) {
           console.error("Error adding document: ", e);
+        } finally {
+          this.loading = false;
         }
       }
     },

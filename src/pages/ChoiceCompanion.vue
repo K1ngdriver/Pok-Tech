@@ -1,35 +1,4 @@
 <template>
-  <q-dialog v-model="isDialogOpen">
-    <q-card style="width: 90vw" class="dialog">
-      <q-card-section>
-        <div class="dialog-title">Search filters</div>
-      </q-card-section>
-
-      <q-card-section>
-        <q-form>
-          <q-input
-            class="q-mb-md"
-            outlined
-            v-model="searchTerm"
-            label="Name or number"
-          />
-          <q-select
-            class="q-mb-md"
-            outlined
-            v-model="region"
-            :options="regions"
-            label="Region"
-          />
-          <q-select outlined v-model="type" :options="types" label="Type" />
-        </q-form>
-      </q-card-section>
-
-      <q-card-actions align="right">
-        <q-btn flat label="Cancel" v-close-popup />
-        <q-btn label="Search" color="secondary" @click="fetchPokemons" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
   <q-dialog v-model="areYouSureDialogOpen">
     <q-card style="width: 90vw" class="dialog">
       <q-card-section>
@@ -48,11 +17,7 @@
   </q-dialog>
 
   <div class="flex flex-center index-page">
-    <ContainerComponent
-      title="Select Companion"
-      :hasSearch="true"
-      :openFilters="openFilters"
-    >
+    <ContainerComponent title="Select Companion">
       <div>
         <div class="pokemon-description">
           <div class="pokemon-description-container">
@@ -102,14 +67,10 @@ defineOptions({
 const router = useRouter();
 
 const pokemons = ref([]);
-const searchTerm = ref("");
-const region = ref(null);
-const type = ref(null);
 const offset = ref(0);
 const limit = 50;
 const loading = ref(false);
 const error = ref(null);
-const isDialogOpen = ref(false);
 const spinner = ref(null);
 const labelChoicePokemon = ref("You can choose a Pokémon to be your friend");
 const areYouSureDialogOpen = ref(false);
@@ -119,18 +80,6 @@ const openAreYouSureDialog = (pokemonId) => {
   dialogPokemon.value = pokemonId;
   areYouSureDialogOpen.value = true;
 };
-
-const closeAreYouSureDialog = () => {
-  areYouSureDialogOpen.value = false;
-};
-
-function openFilters() {
-  isDialogOpen.value = true;
-}
-
-function areYouSureDialog() {
-  areYouSureDialogOpen.value = true;
-}
 
 function selectCompanion(dialogPokemon) {
   router.push(`/nickname-companion/${dialogPokemon}`);
@@ -143,12 +92,10 @@ async function fetchPokemons() {
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon?offset=${offset.value}&limit=${limit}`
     );
-
     const promises = response.data.results.map(async (pokemon) => {
-      const response2 = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}`
-      );
-      const pokeSpecies = response2.data;
+      const details = await axios.get(pokemon.url);
+      const speciesResponse = await axios.get(details.data.species.url);
+      const pokeSpecies = speciesResponse.data;
 
       return {
         ...pokemon,

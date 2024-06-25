@@ -34,7 +34,12 @@
             </template>
           </q-input>
         </div>
-        <q-btn @click="onSubmit" color="primary" style="width: 50%"
+        <q-btn
+          @click="onSubmit"
+          color="primary"
+          style="width: 50%"
+          v-bind:disable="!objectData.email || !objectData.password"
+          v-bind:loading="loading"
           >Log in</q-btn
         >
       </div>
@@ -72,6 +77,7 @@ export default {
         password: "",
       },
       isPwd: true,
+      loading: false,
     };
   },
   methods: {
@@ -80,7 +86,9 @@ export default {
       this.isPwd = !this.isPwd;
     },
     async onSubmit() {
+      this.loading = true;
       await this.login(this.objectData);
+      this.loading = false;
       this.$router.push("/menu");
     },
   },

@@ -21,14 +21,13 @@ export default {
   },
   actions: {
     async register({ commit }, payload) {
-      // Passando `commit` no contexto
       return createUserWithEmailAndPassword(
         auth,
         payload.email,
         payload.password
       )
         .then((userCredential) => {
-          commit("SET_USER_EMAIL", userCredential.user.email); // Usando `commit` corretamente
+          commit("SET_USER_EMAIL", userCredential.user.email);
           return true;
         })
         .catch((error) => {
@@ -37,10 +36,9 @@ export default {
         });
     },
     async login({ commit }, payload) {
-      // Passando `commit` no contexto
       return signInWithEmailAndPassword(auth, payload.email, payload.password)
         .then((userCredential) => {
-          commit("SET_USER_EMAIL", userCredential.user.email); // Usando `commit` corretamente
+          commit("SET_USER_EMAIL", userCredential.user.email);
           return true;
         })
         .catch((error) => {

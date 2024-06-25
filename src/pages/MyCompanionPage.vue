@@ -75,7 +75,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../firebase"; // Ajuste o caminho para o seu arquivo de configuração do Firebase
+import { db } from "../../firebase";
 import ButtonComponent from "src/components/ButtonComponent.vue";
 
 const router = useRouter();
@@ -140,9 +140,7 @@ onMounted(async () => {
       const response = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${user.value.pokemonId}`
       );
-      const speciesResponse = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon-species/${user.value.pokemonId}`
-      );
+      const speciesResponse = await axios.get(response.data.species.url);
 
       pokemon.value = {
         name: response.data.name,
