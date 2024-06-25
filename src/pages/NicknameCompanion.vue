@@ -22,6 +22,8 @@
         <div class="pokemon-info">
           <span class="pokemon-title"> Quer dar um apelido a ele?</span>
         </div>
+      </div>
+      <template #footer>
         <div class="pokemon-description">
           <div class="pokemon-description-container">
             <q-input
@@ -48,7 +50,7 @@
             />
           </q-card-actions>
         </div>
-      </div>
+      </template>
     </ContainerComponent>
   </q-page>
 </template>

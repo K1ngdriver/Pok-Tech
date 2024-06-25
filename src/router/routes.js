@@ -30,8 +30,6 @@ const routes = [
         path: "/my-companion/:pokemonId",
         component: () => import("pages/MyCompanionPage.vue"),
       },
-      { path: "/save", component: () => import("pages/SaveObjectPage.vue") },
-      { path: "/fetch", component: () => import("pages/FetchObjectPage.vue") },
     ],
   },
 

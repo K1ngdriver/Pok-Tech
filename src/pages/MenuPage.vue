@@ -28,17 +28,6 @@ import ContainerComponent from "src/components/ContainerComponent.vue";
 import ButtonComponent from "src/components/ButtonComponent.vue";
 import "./css/MenuPage.scss";
 
-import { computed } from "vue";
-import { useStore } from "vuex";
-
-// Obtenha a instância da store Vuex
-const store = useStore();
-
-// Crie uma propriedade computada para acessar o getter
-const userEmail = computed(() => store.getters["auth/userEmail"]);
-
-console.log({ userEmail: userEmail.value });
-
 const route = useRouter();
 
 function goToPokedex() {

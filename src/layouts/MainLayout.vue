@@ -17,7 +17,11 @@
 <script setup>
 import { useRouter } from "vue-router";
 import "./MainLayout.scss";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
+const store = useStore();
+const userEmail = computed(() => store.getters["auth/userEmail"]);
 const router = useRouter();
 
 defineOptions({
@@ -25,6 +29,10 @@ defineOptions({
 });
 
 function goToHome() {
-  router.push("/");
+  if (userEmail.value) {
+    router.push("/menu");
+  } else {
+    router.push("/");
+  }
 }
 </script>

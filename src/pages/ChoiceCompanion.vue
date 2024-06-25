@@ -46,82 +46,78 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="isDialogOpen">
+    <q-card style="width: 90vw" class="dialog">
+      <q-card-section>
+        <div class="dialog-title">Filtros de pesquisa</div>
+      </q-card-section>
+
+      <q-card-section>
+        <q-form>
+          <q-input
+            class="q-mb-md"
+            outlined
+            v-model="searchTerm"
+            label="Nome ou número"
+          />
+          <q-select
+            class="q-mb-md"
+            outlined
+            v-model="region"
+            :options="regions"
+            label="Região"
+          />
+          <q-select outlined v-model="type" :options="types" label="Tipagem" />
+        </q-form>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancelar" v-close-popup />
+        <q-btn label="Pesquisar" color="secondary" @click="fetchPokemons" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="areYouSureDialogOpen">
+    <q-card style="width: 90vw" class="dialog">
+      <q-card-section>
+        <div class="dialog-title">Você escolhe este Pokémon?</div>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Não" v-close-popup />
+        <q-btn
+          label="Sim"
+          color="secondary"
+          @click="selectCompanion(dialogPokemon)"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
   <div class="flex flex-center index-page">
     <ContainerComponent
       title="Selecionar Companheiro"
       :hasSearch="true"
       :openFilters="openFilters"
     >
-      <div class="pokemon-description">
-        <div class="pokemon-description-container">
-          <p class="pokemon-description-text">
-            {{ labelChoicePokemon }}
-          </p>
+      <div>
+        <div class="pokemon-description">
+          <div class="pokemon-description-container">
+            <p class="pokemon-description-text">
+              {{ labelChoicePokemon }}
+            </p>
+          </div>
         </div>
-      </div>
-      <q-dialog v-model="isDialogOpen">
-        <q-card style="width: 90vw" class="dialog">
-          <q-card-section>
-            <div class="dialog-title">Filtros de pesquisa</div>
-          </q-card-section>
 
-          <q-card-section>
-            <q-form>
-              <q-input
-                class="q-mb-md"
-                outlined
-                v-model="searchTerm"
-                label="Nome ou número"
-              />
-              <q-select
-                class="q-mb-md"
-                outlined
-                v-model="region"
-                :options="regions"
-                label="Região"
-              />
-              <q-select
-                outlined
-                v-model="type"
-                :options="types"
-                label="Tipagem"
-              />
-            </q-form>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn flat label="Cancelar" v-close-popup />
-            <q-btn label="Pesquisar" color="secondary" @click="fetchPokemons" />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-
-      <q-dialog v-model="areYouSureDialogOpen">
-        <q-card style="width: 90vw" class="dialog">
-          <q-card-section>
-            <div class="dialog-title">Você escolhe este Pokémon?</div>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn flat label="Não" v-close-popup />
-            <q-btn
-              label="Sim"
-              color="secondary"
-              @click="selectCompanion(dialogPokemon)"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-
-      <div class="pokemon-list q-pa-md">
-        <div
-          v-for="pokemon in pokemons"
-          :key="pokemon?.id"
-          class="pokemon-item"
-          @click="openAreYouSureDialog(pokemon?.id)"
-        >
-          <img :src="pokemon?.image" :alt="pokemon?.name" width="100px" />
-          <div>{{ capitalize(pokemon?.name) }}</div>
+        <div class="pokemon-list q-pa-md">
+          <div
+            v-for="pokemon in pokemons"
+            :key="pokemon?.id"
+            class="pokemon-item"
+            @click="openAreYouSureDialog(pokemon?.id)"
+          >
+            <img :src="pokemon?.image" :alt="pokemon?.name" width="100px" />
+            <div>{{ capitalize(pokemon?.name) }}</div>
+          </div>
         </div>
       </div>
       <template #footer>
