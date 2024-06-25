@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <ContainerComponent title="Menu">
+    <ContainerComponent title="Hub">
       <div class="menu-page">
         <ButtonComponent
           title="Pokédex"
@@ -56,14 +56,13 @@ function goToGuessPokemon() {
 }
 
 const fetchUser = async () => {
-  console.log({ email: userEmail.value });
   try {
     const q = query(
       collection(db, "users"),
       where("email", "==", userEmail.value)
     );
     const querySnapshot = await getDocs(q);
-    console.log({ querySnapshot });
+
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
         user.value = {
@@ -71,7 +70,6 @@ const fetchUser = async () => {
           ...doc.data(),
         };
       });
-      console.log("User found:", user.value);
     } else {
       console.log("No such document!");
     }

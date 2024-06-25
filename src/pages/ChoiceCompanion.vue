@@ -2,7 +2,7 @@
   <q-dialog v-model="isDialogOpen">
     <q-card style="width: 90vw" class="dialog">
       <q-card-section>
-        <div class="dialog-title">Filtros de pesquisa</div>
+        <div class="dialog-title">Search filters</div>
       </q-card-section>
 
       <q-card-section>
@@ -11,91 +11,45 @@
             class="q-mb-md"
             outlined
             v-model="searchTerm"
-            label="Nome ou número"
+            label="Name or number"
           />
           <q-select
             class="q-mb-md"
             outlined
             v-model="region"
             :options="regions"
-            label="Região"
+            label="Region"
           />
-          <q-select outlined v-model="type" :options="types" label="Tipagem" />
+          <q-select outlined v-model="type" :options="types" label="Type" />
         </q-form>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Cancelar" v-close-popup />
-        <q-btn label="Pesquisar" color="secondary" @click="fetchPokemons" />
+        <q-btn flat label="Cancel" v-close-popup />
+        <q-btn label="Search" color="secondary" @click="fetchPokemons" />
       </q-card-actions>
     </q-card>
   </q-dialog>
   <q-dialog v-model="areYouSureDialogOpen">
     <q-card style="width: 90vw" class="dialog">
       <q-card-section>
-        <div class="dialog-title">Você escolhe este Pokémon?</div>
+        <div class="dialog-title">Did you choose this Pokémon?</div>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Não" v-close-popup />
+        <q-btn flat label="No" v-close-popup />
         <q-btn
-          label="Sim"
+          label="Yes"
           color="secondary"
           @click="selectCompanion(dialogPokemon)"
         />
       </q-card-actions>
     </q-card>
   </q-dialog>
-  <q-dialog v-model="isDialogOpen">
-    <q-card style="width: 90vw" class="dialog">
-      <q-card-section>
-        <div class="dialog-title">Filtros de pesquisa</div>
-      </q-card-section>
 
-      <q-card-section>
-        <q-form>
-          <q-input
-            class="q-mb-md"
-            outlined
-            v-model="searchTerm"
-            label="Nome ou número"
-          />
-          <q-select
-            class="q-mb-md"
-            outlined
-            v-model="region"
-            :options="regions"
-            label="Região"
-          />
-          <q-select outlined v-model="type" :options="types" label="Tipagem" />
-        </q-form>
-      </q-card-section>
-
-      <q-card-actions align="right">
-        <q-btn flat label="Cancelar" v-close-popup />
-        <q-btn label="Pesquisar" color="secondary" @click="fetchPokemons" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-  <q-dialog v-model="areYouSureDialogOpen">
-    <q-card style="width: 90vw" class="dialog">
-      <q-card-section>
-        <div class="dialog-title">Você escolhe este Pokémon?</div>
-      </q-card-section>
-
-      <q-card-actions align="right">
-        <q-btn flat label="Não" v-close-popup />
-        <q-btn
-          label="Sim"
-          color="secondary"
-          @click="selectCompanion(dialogPokemon)"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
   <div class="flex flex-center index-page">
     <ContainerComponent
-      title="Selecionar Companheiro"
+      title="Select Companion"
       :hasSearch="true"
       :openFilters="openFilters"
     >
@@ -157,9 +111,7 @@ const loading = ref(false);
 const error = ref(null);
 const isDialogOpen = ref(false);
 const spinner = ref(null);
-const labelChoicePokemon = ref(
-  "Você pode escolher um pokémon jovem para ser seu amigo"
-);
+const labelChoicePokemon = ref("You can choose a Pokémon to be your friend");
 const areYouSureDialogOpen = ref(false);
 const dialogPokemon = ref("");
 
@@ -182,8 +134,6 @@ function areYouSureDialog() {
 
 function selectCompanion(dialogPokemon) {
   router.push(`/nickname-companion/${dialogPokemon}`);
-
-  console.log({ dialogPokemon });
 }
 
 async function fetchPokemons() {
@@ -199,8 +149,7 @@ async function fetchPokemons() {
         `https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}`
       );
       const pokeSpecies = response2.data;
-      console.log({ pokeSpecies });
-      console.log({ species: pokeSpecies.evolves_from_species });
+
       return {
         ...pokemon,
         pokeSpecies,
@@ -226,7 +175,7 @@ async function fetchPokemons() {
         };
       })
     );
-    console.log({ firstEvolutions });
+
     pokemons.value = [...pokemons.value, ...firstEvolutions];
     offset.value += limit;
   } catch (err) {

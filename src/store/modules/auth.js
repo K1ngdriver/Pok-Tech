@@ -28,7 +28,6 @@ export default {
         payload.password
       )
         .then((userCredential) => {
-          console.log("userCredential", userCredential);
           commit("SET_USER_EMAIL", userCredential.user.email); // Usando `commit` corretamente
           return true;
         })
@@ -41,7 +40,6 @@ export default {
       // Passando `commit` no contexto
       return signInWithEmailAndPassword(auth, payload.email, payload.password)
         .then((userCredential) => {
-          console.log("userCredential", userCredential);
           commit("SET_USER_EMAIL", userCredential.user.email); // Usando `commit` corretamente
           return true;
         })

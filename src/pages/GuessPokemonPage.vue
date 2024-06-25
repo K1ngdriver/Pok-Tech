@@ -8,7 +8,7 @@
         <q-spinner size="50px" color="black" />
       </div>
       <div v-else class="guess-pokemon-page">
-        <span class="guess-pokemon-page-title">Dicas</span>
+        <span class="guess-pokemon-page-title">Tips</span>
         <div class="guess-pokemon-page-buttons-container">
           <div v-for="tip in revealedTips" :key="tip.id">
             <span>
@@ -75,6 +75,25 @@ defineOptions({
   name: "GuessPokemonPage",
 });
 
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase";
+
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+// Obtenha a instância da store Vuex
+const store = useStore();
+
+// Crie uma propriedade computada para acessar o getter
+const userEmail = computed(() => store.getters["auth/userEmail"]);
+
 const response = ref("");
 const loading = ref(false);
 const error = ref(null);
@@ -82,8 +101,9 @@ const error = ref(null);
 const drawnPokemon = ref(null);
 const revealedPokemon = ref(false);
 const userRight = ref(false);
-const currentTip = ref(1);
+const currentTip = ref(0);
 const tips = ref([]);
+const user = ref(null);
 const revealedTips = ref(
   Array.from({ length: 4 }, (_, index) => ({
     id: index + 1,
@@ -175,29 +195,72 @@ async function fetchPokemonTips() {
   }
 }
 
-function submitResponse() {
-  if (currentTip.value === 4) {
-    revealedPokemon.value = true;
-    return;
-  }
+const fetchUser = async () => {
+  try {
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", userEmail.value)
+    );
+    const querySnapshot = await getDocs(q);
 
-  currentTip.value += 1;
-  if (response.value.toLowerCase().trim() !== drawnPokemon.value.name) {
-    revealedTips.value = revealedTips.value.map((revealedTip) => {
-      if (revealedTip.id === currentTip.value) {
-        const nextTip = tips.value.find((tip) => tip.id === currentTip.value);
-        return {
-          ...revealedTip,
-          value: capitalize(nextTip.value),
-          title: nextTip.title,
-          guessed: true,
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        user.value = {
+          id: doc.id,
+          ...doc.data(),
         };
-      }
-      return revealedTip;
-    });
-  } else {
+      });
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+const updateCountHearts = async () => {
+  try {
+    if (user.value.countHearts < 5) {
+      const userRef = doc(db, "users", user.value.id);
+      await updateDoc(userRef, {
+        countHearts: user.value.countHearts + 1,
+      });
+
+      user.value.countHearts = user.value.countHearts + 1;
+    }
+  } catch (error) {
+    console.error("Error updating user name:", error);
+  }
+};
+
+async function submitResponse() {
+  const userResponse = response.value.toLowerCase().trim();
+
+  if (userResponse === drawnPokemon.value.name) {
     userRight.value = true;
     revealedPokemon.value = true;
+
+    await fetchUser();
+    await updateCountHearts();
+  } else {
+    if (currentTip.value === 4) {
+      revealedPokemon.value = true;
+      userRight.value = false;
+    } else {
+      currentTip.value += 1;
+      revealedTips.value = revealedTips.value.map((revealedTip) => {
+        if (revealedTip.id === currentTip.value) {
+          const nextTip = tips.value.find((tip) => tip.id === currentTip.value);
+          return {
+            ...revealedTip,
+            value: capitalize(nextTip.value),
+            title: nextTip.title,
+            guessed: true,
+          };
+        }
+        return revealedTip;
+      });
+    }
   }
 }
 

@@ -17,7 +17,7 @@
         <div class="full-width">
           <span class="login-page-label">
             <q-icon name="lock" />
-            Senha
+            Password
           </span>
           <q-input
             v-model="objectData.password"
@@ -35,7 +35,7 @@
           </q-input>
         </div>
         <q-btn @click="onSubmit" color="primary" style="width: 50%"
-          >Entrar</q-btn
+          >Log in</q-btn
         >
       </div>
       <template v-slot:footer>
@@ -48,7 +48,7 @@
             text-decoration: underline;
           "
         >
-          Ainda não tem uma conta? Cadastre-se!
+          Not have an account yet? Register!
         </p>
       </template>
     </ContainerComponent>
@@ -80,7 +80,6 @@ export default {
       this.isPwd = !this.isPwd;
     },
     async onSubmit() {
-      console.log("Logging in with:", this.objectData);
       await this.login(this.objectData);
       this.$router.push("/menu");
     },

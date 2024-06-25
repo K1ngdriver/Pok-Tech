@@ -7,7 +7,7 @@
       <div v-else>
         <div class="pokemon-info">
           <span class="pokemon-title"
-            >Você escolheu {{ capitalize(pokemon.name) }}</span
+            >You have choose {{ capitalize(pokemon.name) }}</span
           >
         </div>
         <div class="pokemon-image">
@@ -20,7 +20,9 @@
           </div>
         </div>
         <div class="pokemon-info">
-          <span class="pokemon-title"> Quer dar um apelido a ele?</span>
+          <span class="pokemon-title">
+            Do you want to give him a nickname?
+          </span>
         </div>
       </div>
       <template v-slot:footer>
@@ -33,18 +35,18 @@
               counter
               maxlength="20"
               v-model="newNickName"
-              label="Digite um apelido ..."
+              label="Enter a nickname ..."
             />
           </div>
           <q-card-actions align="center">
             <q-btn
               style="background-color: #000; color: white"
               flat
-              label="Cancelar"
+              label="Cancel"
               @click="returnToMenu"
             />
             <q-btn
-              label="Confirmar"
+              label="Confirm"
               style="background-color: #ff3131; color: white"
               @click="changeName"
             />
@@ -71,7 +73,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../firebase"; // Ajuste o caminho para o seu arquivo de configuração do Firebase
+import { db } from "../../firebase";
 
 import { computed } from "vue";
 import { useStore } from "vuex";
@@ -94,34 +96,30 @@ function returnToMenu() {
 }
 
 async function changeName() {
-  console.log({ nickname: newNickName.value });
   const pokemonData = {
     pokemonId: newPokemonId.value,
     nicknamePokemon: newNickName.value,
   };
 
   try {
-    await fetchUser(); // Aguardar a execução do fetchUser
+    await fetchUser();
   } catch (e) {
     console.error(e);
   }
 
-  console.log({ user: user.value });
   updateUserName();
-  console.log({ pokemonData });
 
   router.push(`/my-companion`);
 }
 
 const fetchUser = async () => {
-  console.log({ email: userEmail.value });
   try {
     const q = query(
       collection(db, "users"),
       where("email", "==", userEmail.value)
     );
     const querySnapshot = await getDocs(q);
-    console.log({ querySnapshot });
+
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
         user.value = {
@@ -129,7 +127,6 @@ const fetchUser = async () => {
           ...doc.data(),
         };
       });
-      console.log("User found:", user.value);
     } else {
       console.log("No such document!");
     }
@@ -139,17 +136,17 @@ const fetchUser = async () => {
 };
 
 const updateUserName = async () => {
-  console.log({ user: user.value });
   try {
     const userRef = doc(db, "users", user.value.id);
     await updateDoc(userRef, {
       nicknamePokemon: newNickName.value,
       pokemonId: newPokemonId.value,
+      countHearts: 0,
     });
-    console.log("User name updated successfully!");
 
     // Atualiza o objeto localmente após a atualização
-    user.value.name = newNickName.value;
+    user.value.nicknamePokemon = newNickName.value;
+    user.value.pokemonId = newPokemonId.value;
   } catch (error) {
     console.error("Error updating user name:", error);
   }
@@ -158,7 +155,6 @@ const updateUserName = async () => {
 onMounted(async () => {
   const pokemonId = route.params.pokemonId;
   newPokemonId.value = pokemonId;
-  console.log({ newPokemonId: newPokemonId.value });
 
   try {
     await fetchUser();

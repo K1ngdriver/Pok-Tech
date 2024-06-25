@@ -2,7 +2,7 @@
   <q-dialog v-model="isDialogOpen">
     <q-card style="width: 90vw" class="dialog">
       <q-card-section>
-        <div class="dialog-title">Filtros de pesquisa</div>
+        <div class="dialog-title">Search filters</div>
       </q-card-section>
 
       <q-card-section>
@@ -11,28 +11,28 @@
             class="q-mb-md"
             outlined
             v-model="searchTerm"
-            label="Nome ou número"
+            label="Name or number"
           />
           <q-select
             class="q-mb-md"
             outlined
             v-model="generation"
             :options="generationOptions"
-            label="Geração"
+            label="Generation"
           />
           <q-select
             outlined
             v-model="type"
             :options="typeOptions"
-            label="Tipo"
+            label="Types"
           />
         </q-form>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Cancelar" v-close-popup />
+        <q-btn flat label="Cancel" v-close-popup />
         <q-btn
-          label="Limpar"
+          label="Clean"
           v-if="hasFilters"
           color="secondary"
           @click="
@@ -44,7 +44,7 @@
           "
         />
         <q-btn
-          :label="loading ? 'Carregando...' : 'Pesquisar'"
+          :label="loading ? 'Loading...' : 'Search'"
           color="primary"
           v-bind:disable="loading"
           @click="
@@ -81,7 +81,7 @@
         </div>
       </div>
       <div v-else class="full-width flex justify-center q-py-md" ref="spinner">
-        <span class="text-bold">Nenhum Pokémon encontrado</span>
+        <span class="text-bold">No Pokémon found </span>
       </div>
 
       <template v-slot:footer>

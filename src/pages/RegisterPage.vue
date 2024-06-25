@@ -5,7 +5,7 @@
         <div class="full-width">
           <span class="register-page-label">
             <q-icon name="person" />
-            Nickname do usuário
+            User's Nickname
           </span>
           <q-input
             outlined
@@ -29,7 +29,7 @@
         <div class="full-width">
           <span class="register-page-label">
             <q-icon name="lock" />
-            Senha
+            Password
           </span>
           <q-input
             v-model="authData.password"
@@ -47,7 +47,7 @@
           </q-input>
         </div>
         <q-btn @click="onSubmit" color="primary" style="width: 50%">
-          Cadastrar
+          Register
         </q-btn>
       </div>
       <template v-slot:footer>
@@ -60,7 +60,7 @@
             text-decoration: underline;
           "
         >
-          Já possui uma conta? Faça login!
+          Already have an account? Log in!
         </p>
       </template>
     </ContainerComponent>
@@ -110,7 +110,7 @@ export default {
             ...this.userData,
             email: this.authData.email,
           });
-          console.log("Document written with ID: ", docRef.id);
+
           router.push("/menu");
         } catch (e) {
           console.error("Error adding document: ", e);

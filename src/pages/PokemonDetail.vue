@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <ContainerComponent title="Detalhes">
+    <ContainerComponent title="Details">
       <div
         v-if="loading"
         class="flex justify-center full-width q-py-xl full-height"
