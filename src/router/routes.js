@@ -27,7 +27,7 @@ const routes = [
         component: () => import("pages/NicknameCompanion.vue"),
       },
       {
-        path: "/my-companion/:pokemonId",
+        path: "/my-companion/",
         component: () => import("pages/MyCompanionPage.vue"),
       },
     ],

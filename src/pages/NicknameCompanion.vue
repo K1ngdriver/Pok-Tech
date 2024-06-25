@@ -41,7 +41,7 @@
               style="background-color: #000; color: white"
               flat
               label="Cancelar"
-              v-close-popup
+              @click="returnToMenu"
             />
             <q-btn
               label="Confirmar"
@@ -89,6 +89,9 @@ const pokemon = ref({});
 const newNickName = ref("");
 const newPokemonId = ref("");
 const user = ref(null);
+function returnToMenu() {
+  router.push("/menu");
+}
 
 async function changeName() {
   console.log({ nickname: newNickName.value });
@@ -107,7 +110,7 @@ async function changeName() {
   updateUserName();
   console.log({ pokemonData });
 
-  router.push(`/my-companion/${newPokemonId.value}`);
+  router.push(`/my-companion`);
 }
 
 const fetchUser = async () => {
@@ -158,6 +161,7 @@ onMounted(async () => {
   console.log({ newPokemonId: newPokemonId.value });
 
   try {
+    await fetchUser();
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${newPokemonId.value}`
     );
@@ -174,6 +178,11 @@ onMounted(async () => {
         (entry) => entry.language.name === "en"
       ).flavor_text,
     };
+    if (user.value.nicknamePokemon) {
+      newNickName.value = user.value.nicknamePokemon;
+    } else {
+      newNickName.value = response.data.name;
+    }
   } catch (error) {
     console.error("Failed to load pokemon details:", error);
   } finally {

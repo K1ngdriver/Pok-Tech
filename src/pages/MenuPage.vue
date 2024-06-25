@@ -28,6 +28,23 @@ import ContainerComponent from "src/components/ContainerComponent.vue";
 import ButtonComponent from "src/components/ButtonComponent.vue";
 import "./css/MenuPage.scss";
 
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+// Obtenha a instância da store Vuex
+const store = useStore();
+
+// Crie uma propriedade computada para acessar o getter
+const userEmail = computed(() => store.getters["auth/userEmail"]);
+
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebase"; // Ajuste o caminho para o seu arquivo de configuração do Firebase
+
+const user = ref({});
+
 const route = useRouter();
 
 function goToPokedex() {
@@ -38,7 +55,37 @@ function goToGuessPokemon() {
   route.push("/guess-pokemon");
 }
 
-function goToCompanion() {
-  route.push("/choice-companion");
+const fetchUser = async () => {
+  console.log({ email: userEmail.value });
+  try {
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", userEmail.value)
+    );
+    const querySnapshot = await getDocs(q);
+    console.log({ querySnapshot });
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        user.value = {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+      console.log("User found:", user.value);
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+async function goToCompanion() {
+  await fetchUser();
+  if (user.value && user.value.pokemonId) {
+    route.push("/my-companion");
+  } else {
+    route.push("/choice-companion");
+  }
 }
 </script>
