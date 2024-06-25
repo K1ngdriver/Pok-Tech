@@ -23,7 +23,7 @@
           <span class="pokemon-title"> Quer dar um apelido a ele?</span>
         </div>
       </div>
-      <template #footer>
+      <template v-slot:footer>
         <div class="pokemon-description">
           <div class="pokemon-description-container">
             <q-input

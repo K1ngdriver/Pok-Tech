@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <template #footer v-if="!loading">
+      <template v-slot:footer v-if="!loading">
         <div class="pokemon-description">
           <div class="pokemon-description-container">
             <p class="pokemon-description-text">

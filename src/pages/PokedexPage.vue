@@ -26,11 +26,7 @@
 
       <q-card-actions align="right">
         <q-btn flat label="Cancelar" v-close-popup />
-        <q-btn
-          label="Pesquisar"
-          style="background-color: #ff3131; color: white"
-          @click="fetchPokemons"
-        />
+        <q-btn label="Pesquisar" color="primary" @click="fetchPokemons" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -51,7 +47,7 @@
           <div>{{ capitalize(pokemon.name) }}</div>
         </div>
       </div>
-      <template #footer>
+      <template v-slot:footer>
         <div class="full-width flex justify-center q-py-md" ref="spinner">
           <q-spinner
             v-if="pokemons.length !== 0 && loading"

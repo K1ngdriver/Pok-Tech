@@ -120,7 +120,7 @@
           </div>
         </div>
       </div>
-      <template #footer>
+      <template v-slot:footer>
         <div class="full-width flex justify-center q-py-md" ref="spinner">
           <q-spinner
             v-if="pokemons.length !== 0 && loading"

@@ -42,7 +42,7 @@
           <span>{{ capitalize(drawnPokemon.name) }}</span>
         </div>
       </div>
-      <template #footer>
+      <template v-slot:footer>
         <div class="flex q-pa-md justify-center">
           <q-input
             label="Name"
