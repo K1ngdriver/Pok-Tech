@@ -88,17 +88,22 @@ const newNickName = ref("");
 const newPokemonId = ref("");
 const user = ref(null);
 
-function changeName() {
-  /* console.log({ nickname: newNickName.value }); */
-  const pokemon = {
+async function changeName() {
+  console.log({ nickname: newNickName.value });
+  const pokemonData = {
     pokemonId: newPokemonId.value,
     nicknamePokemon: newNickName.value,
   };
-  fetchUser();
+
+  try {
+    await fetchUser(); // Aguardar a execução do fetchUser
+  } catch (e) {
+    console.error(e);
+  }
 
   console.log({ user: user.value });
   updateUserName();
-  console.log({ pokemon });
+  console.log({ pokemonData });
 
   router.push(`/my-companion/${newPokemonId.value}`);
 }
@@ -111,7 +116,7 @@ const fetchUser = async () => {
       where("email", "==", userEmail.value)
     );
     const querySnapshot = await getDocs(q);
-
+    console.log({ querySnapshot });
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
         user.value = {
@@ -119,6 +124,7 @@ const fetchUser = async () => {
           ...doc.data(),
         };
       });
+      console.log("User found:", user.value);
     } else {
       console.log("No such document!");
     }
@@ -138,7 +144,7 @@ const updateUserName = async () => {
     console.log("User name updated successfully!");
 
     // Atualiza o objeto localmente após a atualização
-    user.value.name = newName.value;
+    user.value.name = newNickName.value;
   } catch (error) {
     console.error("Error updating user name:", error);
   }
@@ -147,14 +153,14 @@ const updateUserName = async () => {
 onMounted(async () => {
   const pokemonId = route.params.pokemonId;
   newPokemonId.value = pokemonId;
-  console.log({ newpokemonId: newPokemonId.value });
+  console.log({ newPokemonId: newPokemonId.value });
 
   try {
     const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+      `https://pokeapi.co/api/v2/pokemon/${newPokemonId.value}`
     );
     const speciesResponse = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
+      `https://pokeapi.co/api/v2/pokemon-species/${newPokemonId.value}`
     );
 
     pokemon.value = {

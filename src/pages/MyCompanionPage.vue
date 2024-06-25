@@ -50,10 +50,10 @@ onMounted(async () => {
   console.log({ pokemon });
   try {
     const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+      `https://pokeapi.co/api/v2/pokemon/${pokemon}`
     );
     const speciesResponse = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
+      `https://pokeapi.co/api/v2/pokemon-species/${pokemon}`
     );
 
     pokemon.value = {
