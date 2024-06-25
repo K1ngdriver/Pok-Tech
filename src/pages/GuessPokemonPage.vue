@@ -102,6 +102,7 @@ const mappedGeneration = {
   vi: "Sixth",
   vii: "Seventh",
   viii: "Eighth",
+  ix: "Nine",
 };
 
 async function fetchPokemonTips() {

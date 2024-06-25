@@ -1,0 +1,32 @@
+export const generationOptions = [
+  { label: "Geração 1", value: "generation-i" },
+  { label: "Geração 2", value: "generation-ii" },
+  { label: "Geração 3", value: "generation-iii" },
+  { label: "Geração 4", value: "generation-iv" },
+  { label: "Geração 5", value: "generation-v" },
+  { label: "Geração 6", value: "generation-vi" },
+  { label: "Geração 7", value: "generation-vii" },
+  { label: "Geração 8", value: "generation-viii" },
+  { label: "Geração 9", value: "generation-ix" },
+];
+
+export const typeOptions = [
+  { label: "Aço", value: "steel" },
+  { label: "Água", value: "water" },
+  { label: "Dragão", value: "dragon" },
+  { label: "Elétrico", value: "electric" },
+  { label: "Fantasma", value: "ghost" },
+  { label: "Fada", value: "fairy" },
+  { label: "Fogo", value: "fire" },
+  { label: "Gelo", value: "ice" },
+  { label: "Inseto", value: "bug" },
+  { label: "Lutador", value: "fighting" },
+  { label: "Normal", value: "normal" },
+  { label: "Pedra", value: "rock" },
+  { label: "Planta", value: "grass" },
+  { label: "Psíquico", value: "psychic" },
+  { label: "Sombrio", value: "dark" },
+  { label: "Terrestre", value: "ground" },
+  { label: "Venenoso", value: "poison" },
+  { label: "Voador", value: "flying" },
+];
