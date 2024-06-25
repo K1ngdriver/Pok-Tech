@@ -5,6 +5,11 @@
         <q-spinner size="50px" color="black" />
       </div>
       <div v-else>
+        <div class="pokemon-info">
+          <span class="pokemon-title"
+            >Você escolheu {{ capitalize(pokemon.name) }}</span
+          >
+        </div>
         <div class="pokemon-image">
           <div class="pokemon-image-background">
             <img
@@ -15,16 +20,33 @@
           </div>
         </div>
         <div class="pokemon-info">
-          <span class="pokemon-title"
-            >{{ pokemon.number }} - {{ capitalize(pokemon.name) }}</span
-          >
+          <span class="pokemon-title"> Quer dar um apelido a ele?</span>
         </div>
         <div class="pokemon-description">
           <div class="pokemon-description-container">
-            <p class="pokemon-description-text">
-              {{ pokemon.description }}
-            </p>
+            <q-input
+              class="q-mb-md"
+              style="margin-bottom: 0px; width: 320px"
+              outlined
+              counter
+              maxlength="20"
+              v-model="newNickName"
+              label="Digite um apelido ..."
+            />
           </div>
+          <q-card-actions align="center">
+            <q-btn
+              style="background-color: #000; color: white"
+              flat
+              label="Cancelar"
+              v-close-popup
+            />
+            <q-btn
+              label="Confirmar"
+              style="background-color: #ff3131; color: white"
+              @click="changeName"
+            />
+          </q-card-actions>
         </div>
       </div>
     </ContainerComponent>
@@ -33,18 +55,100 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { capitalize } from "src/utils/capitilize";
 import ContainerComponent from "src/components/ContainerComponent.vue";
 import "./css/NicknameCompanion.scss";
 
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase"; // Ajuste o caminho para o seu arquivo de configuração do Firebase
+
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+// Obtenha a instância da store Vuex
+const store = useStore();
+
+// Crie uma propriedade computada para acessar o getter
+const userEmail = computed(() => store.getters["auth/userEmail"]);
+
 const route = useRoute();
+const router = useRouter();
 const loading = ref(true);
 const pokemon = ref({});
+const newNickName = ref("");
+const newPokemonId = ref("");
+const user = ref(null);
+
+function changeName() {
+  /* console.log({ nickname: newNickName.value }); */
+  const pokemon = {
+    pokemonId: newPokemonId.value,
+    nicknamePokemon: newNickName.value,
+  };
+  fetchUser();
+
+  console.log({ user: user.value });
+  updateUserName();
+  console.log({ pokemon });
+
+  router.push(`/my-companion/${newPokemonId.value}`);
+}
+
+const fetchUser = async () => {
+  console.log({ email: userEmail.value });
+  try {
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", userEmail.value)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        user.value = {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+const updateUserName = async () => {
+  console.log({ user: user.value });
+  try {
+    const userRef = doc(db, "users", user.value.id);
+    await updateDoc(userRef, {
+      nicknamePokemon: newNickName.value,
+      pokemonId: newPokemonId.value,
+    });
+    console.log("User name updated successfully!");
+
+    // Atualiza o objeto localmente após a atualização
+    user.value.name = newName.value;
+  } catch (error) {
+    console.error("Error updating user name:", error);
+  }
+};
 
 onMounted(async () => {
   const pokemonId = route.params.pokemonId;
+  newPokemonId.value = pokemonId;
+  console.log({ newpokemonId: newPokemonId.value });
+
   try {
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemonId}`

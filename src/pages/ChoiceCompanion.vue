@@ -52,6 +52,67 @@
       :hasSearch="true"
       :openFilters="openFilters"
     >
+      <div class="pokemon-description">
+        <div class="pokemon-description-container">
+          <p class="pokemon-description-text">
+            {{ labelChoicePokemon }}
+          </p>
+        </div>
+      </div>
+      <q-dialog v-model="isDialogOpen">
+        <q-card style="width: 90vw" class="dialog">
+          <q-card-section>
+            <div class="dialog-title">Filtros de pesquisa</div>
+          </q-card-section>
+
+          <q-card-section>
+            <q-form>
+              <q-input
+                class="q-mb-md"
+                outlined
+                v-model="searchTerm"
+                label="Nome ou número"
+              />
+              <q-select
+                class="q-mb-md"
+                outlined
+                v-model="region"
+                :options="regions"
+                label="Região"
+              />
+              <q-select
+                outlined
+                v-model="type"
+                :options="types"
+                label="Tipagem"
+              />
+            </q-form>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Cancelar" v-close-popup />
+            <q-btn label="Pesquisar" color="secondary" @click="fetchPokemons" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="areYouSureDialogOpen">
+        <q-card style="width: 90vw" class="dialog">
+          <q-card-section>
+            <div class="dialog-title">Você escolhe este Pokémon?</div>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Não" v-close-popup />
+            <q-btn
+              label="Sim"
+              color="secondary"
+              @click="selectCompanion(dialogPokemon)"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
       <div class="pokemon-list q-pa-md">
         <div
           v-for="pokemon in pokemons"
@@ -90,9 +151,6 @@ defineOptions({
 
 const router = useRouter();
 
-/* function goToPokemonDetail(pokemonName) {
-  router.push(`/pokedex/${pokemonName}`);
-} */
 const pokemons = ref([]);
 const searchTerm = ref("");
 const region = ref(null);
@@ -103,12 +161,14 @@ const loading = ref(false);
 const error = ref(null);
 const isDialogOpen = ref(false);
 const spinner = ref(null);
-
+const labelChoicePokemon = ref(
+  "Você pode escolher um pokémon jovem para ser seu amigo"
+);
 const areYouSureDialogOpen = ref(false);
 const dialogPokemon = ref("");
 
-const openAreYouSureDialog = (pokemonName) => {
-  dialogPokemon.value = pokemonName;
+const openAreYouSureDialog = (pokemonId) => {
+  dialogPokemon.value = pokemonId;
   areYouSureDialogOpen.value = true;
 };
 
@@ -124,10 +184,10 @@ function areYouSureDialog() {
   areYouSureDialogOpen.value = true;
 }
 
-function selectCompanion(pokemonId) {
-  router.push(`/nickname-companion/${pokemonId}`);
+function selectCompanion(dialogPokemon) {
+  router.push(`/nickname-companion/${dialogPokemon}`);
 
-  console.log({ pokemonId });
+  console.log({ dialogPokemon });
 }
 
 async function fetchPokemons() {

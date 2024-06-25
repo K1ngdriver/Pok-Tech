@@ -20,34 +20,32 @@ export default {
     userEmail: (state) => state.userEmail,
   },
   actions: {
-    async register({}, payload) {
+    async register({ commit }, payload) {
+      // Passando `commit` no contexto
       return createUserWithEmailAndPassword(
         auth,
         payload.email,
         payload.password
       )
         .then((userCredential) => {
-          // eslint-disable-next-line no-console
           console.log("userCredential", userCredential);
-          commit("SET_USER_EMAIL", userCredential.email);
+          commit("SET_USER_EMAIL", userCredential.user.email); // Usando `commit` corretamente
           return true;
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           console.log("error", error.message);
           return false;
         });
     },
-    async login({}, payload) {
+    async login({ commit }, payload) {
+      // Passando `commit` no contexto
       return signInWithEmailAndPassword(auth, payload.email, payload.password)
         .then((userCredential) => {
-          // eslint-disable-next-line no-console
           console.log("userCredential", userCredential);
-          commit("SET_USER_EMAIL", userCredential.email);
+          commit("SET_USER_EMAIL", userCredential.user.email); // Usando `commit` corretamente
           return true;
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           console.log("error", error.message);
           return false;
         });
@@ -57,11 +55,9 @@ export default {
         .signOut()
         .then(() => {
           commit("CLEAR_USER_EMAIL");
-          // eslint-disable-next-line no-console
           console.log("User signed out");
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           console.log("error", error.message);
         });
     },
